@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid SVM-RF DDoS Detection Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-shield-alt text-danger me-2"></i>
+                <span class="fw-bold">Hybrid DDoS Detection</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#visualizations"><i class="fas fa-chart-bar"></i> Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#history"><i class="fas fa-history"></i> History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#alerts"><i class="fas fa-bell"></i> Alerts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#prediction"><i class="fas fa-brain"></i> Prediction</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-fluid main-content">
+        <!-- SECTION 1: DASHBOARD -->
+        <section id="dashboard" class="py-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row" id="summaryCards">
+                <!-- Cards will be loaded here -->
+            </div>
+
+            <!-- Real-time Monitoring -->
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-signal"></i> Real-Time Attack Monitor</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="realtimeTable" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-hover table-sm">
+                                    <thead class="sticky-top bg-light">
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Source IP</th>
+                                            <th>Attack Type</th>
+                                            <th>Confidence</th>
+                                            <th>Severity</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="realtimeData">
+                                        <!-- Data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: VISUALIZATIONS & ANALYSIS -->
+        <section id="visualizations" class="py-4 mt-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4"><i class="fas fa-chart-bar"></i> Analysis & Visualizations</h2>
+                </div>
+            </div>
+
+            <!-- Control Plane vs Data Plane -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-sitemap"></i> Control vs Data Plane Attacks</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="controlDataPlaneChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attack Type Distribution -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-shapes"></i> Attack Type Classification</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="attackTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Importance & Performance -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-leaf"></i> Feature Importance (Nature-Inspired)</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="featureImportanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Comparison -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="fas fa-rocket"></i> Model Performance Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="performanceMetrics">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Model</th>
+                                            <th>Accuracy</th>
+                                            <th>F1-Score</th>
+                                            <th>Latency (ms)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="performanceBody">
+                                        <!-- Data will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <canvas id="performanceChart" style="margin-top: 20px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ATTACK HISTORY -->
+        <section id="history" class="py-4 mt-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4"><i class="fas fa-history"></i> Attack History</h2>
+                </div>
+            </div>
+
+            <!-- Filter Options -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <select id="historyFilter" class="form-select">
+                        <option value="all">All Attacks</option>
+                        <option value="blocked">Blocked Attacks</option>
+                        <option value="unblocked">Unblocked Attacks</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" onclick="loadHistory()"><i class="fas fa-sync"></i> Refresh</button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div style="overflow-x: auto;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Timestamp</th>
+                                            <th>Source IP</th>
+                                            <th>Dest IP</th>
+                                            <th>Attack Type</th>
+                                            <th>Confidence</th>
+                                            <th>Severity</th>
+                                            <th>Blocked</th>
+                                            <th>Duration (s)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyBody">
+                                        <!-- Data will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Pagination -->
+                            <nav>
+                                <ul class="pagination justify-content-center" id="historyPagination">
+                                    <!-- Pagination will be generated here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ALERTS -->
+        <section id="alerts" class="py-4 mt-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4"><i class="fas fa-bell"></i> Alert System</h2>
+                </div>
+            </div>
+
+            <!-- Send Alert Form -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-paper-plane"></i> Send Alert</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="alertForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Attack ID</label>
+                                    <input type="number" class="form-control" id="alertAttackId" placeholder="Enter attack ID" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Alert Type</label>
+                                    <select class="form-select" id="alertType" required>
+                                        <option>Email</option>
+                                        <option>SMS</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Recipient</label>
+                                    <input type="text" class="form-control" id="alertRecipient" placeholder="Email or phone number" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-send"></i> Send Alert</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert History -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-list"></i> Recent Alerts</h5>
+                        </div>
+                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                            <div id="alertsHistoryContainer">
+                                <!-- Alerts will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ATTACK PREDICTION -->
+        <section id="prediction" class="py-4 mt-4 mb-5">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-4"><i class="fas fa-brain"></i> Attack Prediction (Early Warning)</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Predicted Attack Threats</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="predictionCards">
+                                <!-- Prediction cards will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Attack Detail Modal -->
+    <div class="modal fade" id="attackDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-shield-alt"></i> Attack Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="attackDetailContent">
+                    <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* HYBRID DDoS DETECTION DASHBOARD - CSS STYLING */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --primary-color: #dc3545;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --dark-bg: #1a1d29;
+    --card-bg: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* NAVBAR & HEADER */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(90deg, #1a1d29 0%, #2d3142 100%) !important;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand i {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* MAIN CONTENT */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.main-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 1400px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* CARDS & SECTIONS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+.card-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* SUMMARY CARDS */
+/* ─────────────────────────────────────────────────────────────���────────────────────────────────────────────────────────────────────────────────── */
+
+.summary-card {
+    background: linear-gradient(135deg, var(--primary-color), #ff6b6b);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.summary-card i {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.summary-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.summary-card p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+}
+
+/* Card variants */
+.summary-card.total {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.summary-card.attacks-24h {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.summary-card.blocked {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.summary-card.confidence {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* TABLES */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.table {
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 3px solid #dee2e6;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+/* Badge styles */
+.badge-critical {
+    background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+}
+
+.badge-high {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+}
+
+.badge-medium {
+    background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+}
+
+.badge-low {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.badge-blocked {
+    background: linear-gradient(135deg, #28a745 0%, #5cb85c 100%);
+}
+
+.badge-unblocked {
+    background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* CHARTS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+canvas {
+    max-height: 350px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* PREDICTION CARDS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.prediction-card {
+    border-left: 4px solid #dc3545;
+    background: linear-gradient(135deg, #fff5f7 0%, #ffe8eb 100%);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.prediction-card:hover {
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+    transform: translateX(5px);
+}
+
+.prediction-card .attack-type {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #dc3545;
+    margin-bottom: 10px;
+}
+
+.prediction-card .metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(220, 53, 69, 0.1);
+}
+
+.prediction-card .metric:last-child {
+    border-bottom: none;
+}
+
+.prediction-card .metric-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.prediction-card .metric-value {
+    color: #dc3545;
+    font-weight: 700;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* BUTTONS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+    color: white;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* MODALS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* FORMS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* ALERTS & STATUS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 15px;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #ffe5e5 0%, #ffcccc 100%);
+    color: #dc3545;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    color: #856404;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* RESPONSIVE DESIGN */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .main-content {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .summary-card {
+        margin-bottom: 15px;
+    }
+
+    .summary-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .summary-card i {
+        font-size: 2rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table td {
+        padding: 8px;
+    }
+
+    canvas {
+        max-height: 250px;
+    }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* ANIMATIONS */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.table tbody tr {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.prediction-card {
+    animation: slideInRight 0.5s ease-in-out;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* LOADING SPINNER */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* UTILITY CLASSES */
+/* ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+.text-danger { color: #dc3545 !important; }
+.text-success { color: #28a745 !important; }
+.text-warning { color: #ffc107 !important; }
+.text-info { color: #17a2b8 !important; }
+
+.bg-light-danger { background-color: #ffe5e5 !important; }
+.bg-light-success { background-color: #d4edda !important; }
+
+.fw-bold { font-weight: 700 !important; }
+.fw-600 { font-weight: 600 !important; }
+
+.cursor-pointer { cursor: pointer; }
+
+.shadow-sm { box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; }
